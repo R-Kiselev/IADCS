@@ -1,0 +1,8 @@
+# ninja log v6
+12	347	7790333384176037	InterfacesAndDevicesOfPC_autogen/timestamp	d39453862cfce049
+12	347	7790333384176037	InterfacesAndDevicesOfPC_autogen/mocs_compilation.cpp	d39453862cfce049
+12	347	7790333384176037	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/InterfacesAndDevicesOfPC_autogen/timestamp	d39453862cfce049
+12	347	7790333384176037	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/InterfacesAndDevicesOfPC_autogen/mocs_compilation.cpp	d39453862cfce049
+354	512	7790333385431314	CMakeFiles/InterfacesAndDevicesOfPC.dir/InterfacesAndDevicesOfPC_autogen/mocs_compilation.cpp.obj	f9c7b7452276704b
+362	5970	7790333385511115	CMakeFiles/InterfacesAndDevicesOfPC.dir/main.cpp.obj	5710aeda824a3912
+5976	7257	7790333441655945	InterfacesAndDevicesOfPC.exe	a6e910e1a4f2bbc

@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-d0094a50bb2071803777.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "InterfacesAndDevicesOfPC",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "InterfacesAndDevicesOfPC::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-InterfacesAndDevicesOfPC-Debug-29fb032e236afe122e4d.json",
+					"name" : "InterfacesAndDevicesOfPC",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "InterfacesAndDevicesOfPC_autogen::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-InterfacesAndDevicesOfPC_autogen-Debug-7c03ef1ed7cc2a7fa4e5.json",
+					"name" : "InterfacesAndDevicesOfPC_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "InterfacesAndDevicesOfPC_autogen_timestamp_deps::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-InterfacesAndDevicesOfPC_autogen_timestamp_deps-Debug-b5e4231c71f700192bf2.json",
+					"name" : "InterfacesAndDevicesOfPC_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug",
+		"source" : "C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
