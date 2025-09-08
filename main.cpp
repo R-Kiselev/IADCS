@@ -1,10 +1,11 @@
 #include <QApplication>
-#include <QPushButton>
+#include "MyMainWindow.h" // Включаем наш новый класс MyMainWindow
 
 int main(int argc, char *argv[]) {
     QApplication a(argc, argv);
-    QPushButton button("Hello world!", nullptr);
-    button.resize(200, 100);
-    button.show();
-    return QApplication::exec();
+
+    MyMainWindow window; // Создаем экземпляр нашего главного окна
+    window.show();       // Отображаем окно
+
+    return a.exec();     // Запускаем цикл обработки событий приложения
 }

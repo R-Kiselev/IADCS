@@ -14,11 +14,19 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(InterfacesAndDevicesOfPC main.cpp)
+add_executable(InterfacesAndDevicesOfPC main.cpp
+        MyMainWindow.cpp
+        MyMainWindow.h
+        labs/lab1/Lab1Widget.cpp
+        labs/lab1/Lab1Widget.h
+)
 target_link_libraries(InterfacesAndDevicesOfPC
         Qt::Core
         Qt::Gui
         Qt::Widgets
+        powrprof
+        setupapi  # Добавлено для SetupDiXXX функций
+        cfgmgr32
 )
 
 if (WIN32 AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
