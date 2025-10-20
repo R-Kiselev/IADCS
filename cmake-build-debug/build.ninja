@@ -81,6 +81,14 @@ build CMakeFiles/InterfacesAndDevicesOfPC.dir/labs/lab1/Lab1Widget.cpp.obj: CXX_
   OBJECT_DIR = CMakeFiles\InterfacesAndDevicesOfPC.dir
   OBJECT_FILE_DIR = CMakeFiles\InterfacesAndDevicesOfPC.dir\labs\lab1
 
+build CMakeFiles/InterfacesAndDevicesOfPC.dir/labs/lab2/Lab2Widget.cpp.obj: CXX_COMPILER__InterfacesAndDevicesOfPC_unscanned_Debug C$:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab2/Lab2Widget.cpp || cmake_object_order_depends_target_InterfacesAndDevicesOfPC
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEP_FILE = CMakeFiles\InterfacesAndDevicesOfPC.dir\labs\lab2\Lab2Widget.cpp.obj.d
+  FLAGS = -g -std=gnu++20 -fdiagnostics-color=always
+  INCLUDES = -isystem C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/InterfacesAndDevicesOfPC_autogen/include -isystem C:/Qt/6.9.2/mingw_64/include/QtCore -isystem C:/Qt/6.9.2/mingw_64/include -isystem C:/Qt/6.9.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.9.2/mingw_64/include/QtGui -isystem C:/Qt/6.9.2/mingw_64/include/QtWidgets
+  OBJECT_DIR = CMakeFiles\InterfacesAndDevicesOfPC.dir
+  OBJECT_FILE_DIR = CMakeFiles\InterfacesAndDevicesOfPC.dir\labs\lab2
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target InterfacesAndDevicesOfPC
@@ -89,7 +97,7 @@ build CMakeFiles/InterfacesAndDevicesOfPC.dir/labs/lab1/Lab1Widget.cpp.obj: CXX_
 #############################################
 # Link the executable InterfacesAndDevicesOfPC.exe
 
-build InterfacesAndDevicesOfPC.exe: CXX_EXECUTABLE_LINKER__InterfacesAndDevicesOfPC_Debug CMakeFiles/InterfacesAndDevicesOfPC.dir/InterfacesAndDevicesOfPC_autogen/mocs_compilation.cpp.obj CMakeFiles/InterfacesAndDevicesOfPC.dir/main.cpp.obj CMakeFiles/InterfacesAndDevicesOfPC.dir/MyMainWindow.cpp.obj CMakeFiles/InterfacesAndDevicesOfPC.dir/labs/lab1/Lab1Widget.cpp.obj | C$:/Qt/6.9.2/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.9.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.9.2/mingw_64/lib/libQt6Core.a || InterfacesAndDevicesOfPC_autogen InterfacesAndDevicesOfPC_autogen_timestamp_deps
+build InterfacesAndDevicesOfPC.exe: CXX_EXECUTABLE_LINKER__InterfacesAndDevicesOfPC_Debug CMakeFiles/InterfacesAndDevicesOfPC.dir/InterfacesAndDevicesOfPC_autogen/mocs_compilation.cpp.obj CMakeFiles/InterfacesAndDevicesOfPC.dir/main.cpp.obj CMakeFiles/InterfacesAndDevicesOfPC.dir/MyMainWindow.cpp.obj CMakeFiles/InterfacesAndDevicesOfPC.dir/labs/lab1/Lab1Widget.cpp.obj CMakeFiles/InterfacesAndDevicesOfPC.dir/labs/lab2/Lab2Widget.cpp.obj | C$:/Qt/6.9.2/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.9.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.9.2/mingw_64/lib/libQt6Core.a || InterfacesAndDevicesOfPC_autogen InterfacesAndDevicesOfPC_autogen_timestamp_deps
   FLAGS = -g
   LINK_LIBRARIES = C:/Qt/6.9.2/mingw_64/lib/libQt6Widgets.a  -lpowrprof  -lsetupapi  -lcfgmgr32  C:/Qt/6.9.2/mingw_64/lib/libQt6Gui.a  C:/Qt/6.9.2/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\InterfacesAndDevicesOfPC.dir

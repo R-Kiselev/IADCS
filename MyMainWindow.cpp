@@ -1,29 +1,17 @@
 #include "MyMainWindow.h"
 #include "labs/lab1/Lab1Widget.h"
+#include "labs/lab2/Lab2Widget.h" // <--- ДОБАВИТЬ ЭТО
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QWidget>
 #include <QLabel>
 #include <QDebug>
 #include <QTransform>
-#include <cmath> // Для M_PI
+#include <cmath>
 
-// --- КОНСТАНТЫ ДЛЯ НАСТРОЙКИ ---
-// Размеры оригинального perry_kick.png (важно для расчетов pivot points)
-// Установите ТОЧНЫЕ размеры вашего файла perry_kick.png
-// Эти константы теперь менее критичны, так как вращение будет вокруг центра,
-// но все еще хорошая практика их иметь для масштабирования.
 #define ORIGINAL_KICK_PERRY_WIDTH 348.0
 #define ORIGINAL_KICK_PERRY_HEIGHT 266.0
 
-// Координаты точки вращения (пятки) и точки прицеливания (носка)
-// Эти константы больше НЕ ИСПОЛЬЗУЮТСЯ для новой упрощенной логики.
-// Вы можете их удалить или оставить закомментированными.
-// #define KICK_PIVOT_X 333.0
-// #define KICK_PIVOT_Y 111.0
-// #define KICK_AIM_X 248.0
-// #define KICK_AIM_Y 61.0
-// --- КОНЕЦ КОНСТАНТ ---
 
 MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("Лабораторные работы: Интерфейсы и устройства ПК");
@@ -79,6 +67,10 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
         if (i == 1) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab1ButtonClicked);
         }
+        if (i == 2) {
+            connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab2ButtonClicked);
+        }
+
 
         if (i <= 3) {
             leftColumnLayout->addWidget(labButton);
@@ -125,7 +117,7 @@ bool MyMainWindow::eventFilter(QObject *obj, QEvent *event) {
     return QMainWindow::eventFilter(obj, event);
 }
 
-// УПРОЩЕННАЯ ВЕРСИЯ getTransformedKickPerry
+
 QPixmap MyMainWindow::getTransformedKickPerry(QPushButton *button, bool reflectHorizontal) {
     if (kickPerryPixmap.isNull()) {
         qDebug() << "getTransformedKickPerry: kickPerryPixmap is null!";
@@ -133,34 +125,15 @@ QPixmap MyMainWindow::getTransformedKickPerry(QPushButton *button, bool reflectH
     }
 
     QTransform transform;
-
-    // Точка вращения теперь будет центр изображения kickPerryPixmap
-    // QTransform::rotate() по умолчанию вращает вокруг (0,0),
-    // чтобы вращать вокруг центра, нужно сначала транслировать центр в (0,0),
-    // потом повернуть, потом транслировать обратно.
-
-    // Но для простого отражения и небольшого поворота, можно обойтись без сложных трансляций
-    // если изображение уже отцентровано или поворот небольшой.
-
-    // 1. Применяем горизонтальное отражение, если нужно
     if (reflectHorizontal) {
-        // Отражаем изображение, затем немного поворачиваем, чтобы казалось, что он "целится" влево
-        // Угол поворота (в градусах)
-        qreal rotationAngle = -15.0; // Например, 15 градусов против часовой стрелки
+        qreal rotationAngle = -15.0;
         transform.scale(-1, 1);
-        // Применяем поворот. По умолчанию QTransform.rotate() вращает вокруг (0,0).
-        // Чтобы вращать вокруг центра изображения, нужно сдвинуть, повернуть, сдвинуть обратно.
-        // Или можно использовать QPixmap::transformed с QTransform.
-        // Самый простой способ: сначала отразить, потом повернуть вокруг центра (0,0),
-        // а потом отмасштабировать для QLabel.
         transform.rotate(rotationAngle);
     } else {
-        // Если не отражаем, немного поворачиваем, чтобы казалось, что он "целится" вправо
-        qreal rotationAngle = 15.0; // Например, 15 градусов по часовой стрелке
+        qreal rotationAngle = 15.0;
         transform.rotate(rotationAngle);
     }
 
-    // Применяем трансформацию к оригинальному Pixmap
     return kickPerryPixmap.transformed(transform, Qt::SmoothTransformation);
 }
 
@@ -180,19 +153,19 @@ void MyMainWindow::updatePerryState(QPushButton *button, bool hovered) {
         }
 
         bool reflectHorizontal = false;
-        if (buttonNumber >= 1 && buttonNumber <= 3) { // Кнопки слева
+        if (buttonNumber >= 1 && buttonNumber <= 3) {
             reflectHorizontal = true;
         }
 
         QPixmap transformedPerry = getTransformedKickPerry(button, reflectHorizontal);
         if (!transformedPerry.isNull()) {
-            // Важно: масштабируем transformedPerry уже после всех трансформаций
+
             perryLabel->setPixmap(transformedPerry.scaled(perryLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         } else {
             perryLabel->setText("Kick Perry не найден!");
         }
     } else {
-        // Мышь ушла, возвращаем Перри в исходное состояние
+
         if (!originalPerryPixmap.isNull()) {
             perryLabel->setPixmap(originalPerryPixmap.scaled(perryLabel->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
         } else {
@@ -210,5 +183,17 @@ void MyMainWindow::onLab1ButtonClicked() {
         stackedWidget->setCurrentIndex(0);
         stackedWidget->removeWidget(lab1);
         lab1->deleteLater();
+    });
+}
+
+void MyMainWindow::onLab2ButtonClicked() {
+    Lab2Widget *lab2 = new Lab2Widget(this);
+    stackedWidget->addWidget(lab2);
+    stackedWidget->setCurrentWidget(lab2);
+
+    connect(lab2, &Lab2Widget::backToMainScreen, this, [this, lab2]() {
+        stackedWidget->setCurrentIndex(0);
+        stackedWidget->removeWidget(lab2);
+        lab2->deleteLater();
     });
 }

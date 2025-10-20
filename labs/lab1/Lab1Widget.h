@@ -9,14 +9,12 @@
 #include <QMessageBox>
 #include <QDebug>
 
-// --- Обязательные определения для Windows API ПЕРЕД #include <windows.h> ---
 #ifndef WINVER
 #define WINVER 0x0A00
 #endif
 #ifndef _WIN32_WINNT
 #define _WIN32_WINNT 0x0A00
 #endif
-// --- Конец обязательных определений ---
 
 #include <windows.h>
 #include <powrprof.h>
@@ -46,13 +44,13 @@ private:
     QLabel *batteryTypeLabel;
     QLabel *batteryLevelLabel;
     QLabel *powerSavingModeLabel;
-    QLabel *batteryLifeTimeFullLabel;             // Остается для системной оценки
-    QLabel *elapsedTimeSinceDisconnectLabel; // НОВОЕ НАЗВАНИЕ: сколько прошло времени
+    QLabel *batteryLifeTimeFullLabel;
+    QLabel *elapsedTimeSinceDisconnectLabel;
 
     QTimer *updateTimer;
 
     SYSTEM_POWER_STATUS lastPowerStatus;
-    qint64 disconnectTimestamp = 0; // Время в мс, когда зарядка была отключена
+    qint64 disconnectTimestamp = 0;
 
     QString formatSecondsToHMS(qint64 seconds) const;
     QString getBatteryChemistry() const;

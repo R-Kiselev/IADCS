@@ -8,7 +8,7 @@
 #include <QEvent>
 #include <QRegularExpression>
 #include <QTransform>
-#include <QStackedWidget> // Добавляем QStackedWidget
+#include <QStackedWidget>
 
 class MyMainWindow : public QMainWindow {
     Q_OBJECT
@@ -19,21 +19,19 @@ public:
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
-    private slots: // Добавляем слоты для кнопок
+    private slots:
         void onLab1ButtonClicked();
-    // Добавьте сюда слоты для других лабораторных работ по мере их реализации
-
+        void onLab2ButtonClicked();
 private:
     QLabel *perryLabel;
     QPixmap originalPerryPixmap;
     QPixmap kickPerryPixmap;
-    QStackedWidget *stackedWidget; // Объявляем QStackedWidget
+    QStackedWidget *stackedWidget;
 
     QPixmap getTransformedKickPerry(QPushButton *button, bool reflectHorizontal);
     void updatePerryState(QPushButton *button, bool hovered);
 
-    // Добавим приватные указатели на виджеты ЛР, чтобы управлять их жизненным циклом
-    QWidget *mainScreenWidget; // Виджет для главного экрана с кнопками и Перри
+    QWidget *mainScreenWidget;
 };
 
 #endif // MYMAINWINDOW_H

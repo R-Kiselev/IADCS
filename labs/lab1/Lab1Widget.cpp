@@ -9,7 +9,6 @@
 #define STATUS_NOT_APPLICABLE "Неприменимо"
 
 Lab1Widget::Lab1Widget(QWidget *parent) : QWidget(parent) {
-    // Инициализация UI-элементов
     QVBoxLayout *mainLayout = new QVBoxLayout(this);
     mainLayout->setAlignment(Qt::AlignTop | Qt::AlignHCenter);
 
@@ -17,24 +16,21 @@ Lab1Widget::Lab1Widget(QWidget *parent) : QWidget(parent) {
     titleLabel->setStyleSheet("font-size: 24px; font-weight: bold; color: white; margin-bottom: 20px;");
     mainLayout->addWidget(titleLabel, 0, Qt::AlignCenter);
 
-    // Labels для вывода информации
     powerSourceLabel = new QLabel(QString("Тип энергопитания: %1").arg(STATUS_UNKNOWN), this);
     batteryTypeLabel = new QLabel(QString("Тип батареи: %1").arg(STATUS_UNKNOWN), this);
     batteryLevelLabel = new QLabel(QString("Уровень заряда батареи: %1").arg(STATUS_UNKNOWN), this);
     powerSavingModeLabel = new QLabel(QString("Режим энергосбережения: %1").arg(STATUS_UNKNOWN), this);
     batteryLifeTimeFullLabel = new QLabel(QString("Время работы аккумулятора (осталось): %1").arg(STATUS_UNKNOWN), this);
-    // Изменяем текст метки для секундомера
     elapsedTimeSinceDisconnectLabel = new QLabel(QString("Время с момента отключения зарядки: %1").arg(STATUS_NOT_APPLICABLE), this);
 
 
-    // Стиль для всех информационных меток
     QString infoLabelStyle = "font-size: 16px; color: lightgray; margin-bottom: 5px;";
     powerSourceLabel->setStyleSheet(infoLabelStyle);
     batteryTypeLabel->setStyleSheet(infoLabelStyle);
     batteryLevelLabel->setStyleSheet(infoLabelStyle);
     powerSavingModeLabel->setStyleSheet(infoLabelStyle);
     batteryLifeTimeFullLabel->setStyleSheet(infoLabelStyle);
-    elapsedTimeSinceDisconnectLabel->setStyleSheet(infoLabelStyle); // Обновляем стиль для новой метки
+    elapsedTimeSinceDisconnectLabel->setStyleSheet(infoLabelStyle);
 
     mainLayout->addWidget(powerSourceLabel);
     mainLayout->addWidget(batteryTypeLabel);
@@ -42,10 +38,9 @@ Lab1Widget::Lab1Widget(QWidget *parent) : QWidget(parent) {
     mainLayout->addWidget(powerSavingModeLabel);
     mainLayout->addSpacing(20);
     mainLayout->addWidget(batteryLifeTimeFullLabel);
-    mainLayout->addWidget(elapsedTimeSinceDisconnectLabel); // Используем новую метку
+    mainLayout->addWidget(elapsedTimeSinceDisconnectLabel);
     mainLayout->addSpacing(30);
 
-    // Кнопки для спящего режима и гибернации
     QHBoxLayout *actionButtonsLayout = new QHBoxLayout();
     actionButtonsLayout->setAlignment(Qt::AlignCenter);
 
@@ -73,7 +68,6 @@ Lab1Widget::Lab1Widget(QWidget *parent) : QWidget(parent) {
     mainLayout->addLayout(actionButtonsLayout);
     mainLayout->addStretch();
 
-    // Кнопка "Назад"
     QPushButton *backButton = new QPushButton("Назад", this);
     backButton->setFixedSize(150, 40);
     backButton->setStyleSheet("QPushButton {"
@@ -88,24 +82,18 @@ Lab1Widget::Lab1Widget(QWidget *parent) : QWidget(parent) {
                               "}");
     mainLayout->addWidget(backButton, 0, Qt::AlignBottom | Qt::AlignLeft);
 
-    // Подключаем слоты
     connect(sleepButton, &QPushButton::clicked, this, &Lab1Widget::onSleepButtonClicked);
     connect(hibernateButton, &QPushButton::clicked, this, &Lab1Widget::onHibernateButtonClicked);
     connect(backButton, &QPushButton::clicked, this, &Lab1Widget::onBackButtonClicked);
 
-    // Инициализируем lastPowerStatus, чтобы при первом updatePowerStatus
-    // правильно определить состояние, если приложение запущено на батарее.
-    lastPowerStatus.ACLineStatus = 1; // Предполагаем, что изначально были на AC.
+    lastPowerStatus.ACLineStatus = 1;
     lastPowerStatus.BatteryLifeTime = BATTERY_LIFE_UNKNOWN;
-    disconnectTimestamp = 0; // Убеждаемся, что сброшено
+    disconnectTimestamp = 0;
 
-
-    // Инициализируем таймер
     updateTimer = new QTimer(this);
     connect(updateTimer, &QTimer::timeout, this, &Lab1Widget::updatePowerStatus);
-    updateTimer->start(1000); // Обновляем каждую секунду
+    updateTimer->start(1000);
 
-    // Вызываем первое обновление при создании виджета
     updatePowerStatus();
     this->setStyleSheet("background-color: #3c3c3c;");
 }
@@ -115,13 +103,6 @@ Lab1Widget::~Lab1Widget() {
 }
 
 QString Lab1Widget::formatSecondsToHMS(qint64 seconds) const {
-    if (seconds == -1 || seconds == BATTERY_LIFE_UNKNOWN) {
-        return STATUS_UNKNOWN;
-    }
-    if (seconds == 0) {
-        return "00:00:00";
-    }
-
     qint64 hours = seconds / 3600;
     seconds %= 3600;
     qint64 minutes = seconds / 60;
@@ -205,36 +186,29 @@ QString Lab1Widget::getBatteryChemistry() const {
 void Lab1Widget::updatePowerStatus() {
     SYSTEM_POWER_STATUS status;
     if (GetSystemPowerStatus(&status)) {
-        // --- ОТЛАДОЧНЫЕ СООБЩЕНИЯ ---
         qDebug() << "--- Power Status Update ---";
         qDebug() << "Current ACLineStatus:" << status.ACLineStatus;
         qDebug() << "Last ACLineStatus:" << lastPowerStatus.ACLineStatus;
         qDebug() << "Current BatteryLifeTime (OS estimate):" << status.BatteryLifeTime;
         qDebug() << "Disconnect Timestamp:" << disconnectTimestamp;
         qDebug() << "---------------------------";
-        // --- КОНЕЦ ОТЛАДОЧНЫХ СООБЩЕНИЙ ---
 
-
-        // Тип энергопитания
         QString powerSource;
-        if (status.ACLineStatus == 0) { // Сейчас работает от батареи
+        if (status.ACLineStatus == 0) {
             powerSource = "Автономная работа (от батареи)";
-            // Если предыдущее состояние было "от сети" или "неизвестно", значит, только что отключили от зарядки
             if (lastPowerStatus.ACLineStatus == 1 || lastPowerStatus.ACLineStatus == 255) {
                 disconnectTimestamp = QDateTime::currentMSecsSinceEpoch(); // Записываем текущее время как начало отсчета
                 qDebug() << "ОТКЛЮЧЕНО ОТ ЗАРЯДКИ! timestamp =" << disconnectTimestamp;
             }
-        } else if (status.ACLineStatus == 1) { // Сейчас работает от сети
+        } else if (status.ACLineStatus == 1) {
             powerSource = "От сети переменного тока";
-            disconnectTimestamp = 0; // Сбрасываем секундомер
+            disconnectTimestamp = 0;
             qDebug() << "ПОДКЛЮЧЕНО К ЗАРЯДКЕ! Сброс секундомера.";
         } else {
             powerSource = STATUS_UNKNOWN;
         }
         powerSourceLabel->setText("Тип энергопитания: " + powerSource);
 
-
-        // Тип батареи (химия)
         QString batteryChemistry = getBatteryChemistry();
         if (batteryChemistry == STATUS_UNKNOWN || batteryChemistry.isEmpty()) {
             if ((status.BatteryFlag & 128) == 128) { // SYSTEM_BATTERY_NO_BATTERY
@@ -251,7 +225,6 @@ void Lab1Widget::updatePowerStatus() {
         }
 
 
-        // Уровень заряда батареи
         QString batteryLevel;
         if (status.BatteryLifePercent == 255) {
             batteryLevel = STATUS_UNKNOWN;
@@ -260,7 +233,6 @@ void Lab1Widget::updatePowerStatus() {
         }
         batteryLevelLabel->setText("Уровень заряда батареи: " + batteryLevel);
 
-        // Текущий режим энергосбережения
         QString powerSavingMode;
         if (status.SystemStatusFlag == 0) {
             powerSavingMode = "Высокая производительность / Сбалансированный";
@@ -269,11 +241,10 @@ void Lab1Widget::updatePowerStatus() {
         } else {
             powerSavingMode = STATUS_UNKNOWN;
         }
-        powerSavingModeLabel->setText("Режим энергосбережения: " + powerSavingMode);
+        powerSavingModeLabel->setText("Режим работы: " + powerSavingMode);
 
-        // Время работы аккумулятора (осталось) - это прямое значение от ОС
         QString runTimeLeftOS;
-        if (status.ACLineStatus == 0 && status.BatteryLifeTime != BATTERY_LIFE_UNKNOWN) {
+        if (status.ACLineStatus == 0) {
             runTimeLeftOS = formatSecondsToHMS(status.BatteryLifeTime);
         } else if (status.ACLineStatus == 1) {
             runTimeLeftOS = STATUS_NOT_APPLICABLE;
@@ -283,21 +254,18 @@ void Lab1Widget::updatePowerStatus() {
         batteryLifeTimeFullLabel->setText("Время работы аккумулятора (осталось): " + runTimeLeftOS);
 
 
-        // ВЫВОДИТЬ ВРЕМЯ С МОМЕНТА ОТКЛЮЧЕНИЯ ЗАРЯДКИ (секундомер)
         if (disconnectTimestamp > 0 && status.ACLineStatus == 0) {
             qint64 elapsedMs = QDateTime::currentMSecsSinceEpoch() - disconnectTimestamp;
             qint64 elapsedSeconds = elapsedMs / 1000;
 
             elapsedTimeSinceDisconnectLabel->setText(QString("Время с момента отключения зарядки: ") + formatSecondsToHMS(elapsedSeconds));
-        } else if (status.ACLineStatus == 1) { // Если подключен к сети
+        } else if (status.ACLineStatus == 1) {
             elapsedTimeSinceDisconnectLabel->setText(QString("Время с момента отключения зарядки: ") + STATUS_NOT_APPLICABLE);
-        } else { // Во всех остальных случаях
+        } else {
             elapsedTimeSinceDisconnectLabel->setText(QString("Время с момента отключения зарядки: ") + STATUS_UNKNOWN);
         }
 
-        // Обновляем lastPowerStatus в самом конце, после всех расчетов.
         lastPowerStatus = status;
-
     } else {
         qDebug() << "Ошибка при получении статуса питания (GetSystemPowerStatus). Код ошибки: " << GetLastError();
         powerSourceLabel->setText(QString("Тип энергопитания: Ошибка получения данных"));
@@ -323,7 +291,6 @@ void Lab1Widget::onSleepButtonClicked() {
         }
     }
 }
-
 void Lab1Widget::onHibernateButtonClicked() {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Подтверждение", "Вы уверены, что хотите перевести компьютер в режим гибернации?",
@@ -338,7 +305,6 @@ void Lab1Widget::onHibernateButtonClicked() {
         }
     }
 }
-
 void Lab1Widget::onBackButtonClicked() {
     emit backToMainScreen();
 }
