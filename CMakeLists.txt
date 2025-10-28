@@ -21,6 +21,8 @@ add_executable(InterfacesAndDevicesOfPC main.cpp
         labs/lab1/Lab1Widget.h
         labs/lab2/Lab2Widget.cpp
         labs/lab2/Lab2Widget.h
+        labs/lab3/Lab3Widget.cpp
+        labs/lab3/Lab3Widget.h
 )
 target_link_libraries(InterfacesAndDevicesOfPC
         Qt::Core
