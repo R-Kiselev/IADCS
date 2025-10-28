@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QTextEdit>
 #include <QProcess>
-#include <QTableWidget> // <--- Добавлено
+#include <QTableWidget>
 
 class Lab3Widget : public QWidget {
     Q_OBJECT
@@ -28,15 +28,15 @@ private:
     void stopVm();
     void addLog(const QString &message);
 
-    // UI Elements
+
     QTextEdit *logDisplay;
     QPushButton *backButton;
     QPushButton *runVmScanButton;
-    QTableWidget *infoTable; // <--- Заменено
+    QTableWidget *infoTable;
 
-    // Process Management
+
     QProcess *vboxProcess;
     bool isVmRunning;
 };
 
-#endif // LAB3WIDGET_H
+#endif

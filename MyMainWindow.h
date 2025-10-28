@@ -7,7 +7,6 @@
 #include <QPixmap>
 #include <QEvent>
 #include <QRegularExpression>
-#include <QTransform>
 #include <QStackedWidget>
 
 class MyMainWindow : public QMainWindow {
@@ -22,7 +21,7 @@ protected:
     private slots:
         void onLab1ButtonClicked();
     void onLab2ButtonClicked();
-    void onLab3ButtonClicked(); // <--- ADD THIS LINE
+    void onLab3ButtonClicked();
 
 private:
     QLabel *perryLabel;
@@ -36,4 +35,4 @@ private:
     QWidget *mainScreenWidget;
 };
 
-#endif // MYMAINWINDOW_H
+#endif

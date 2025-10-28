@@ -7,7 +7,6 @@
 #include <QTimer>
 #include <QLabel>
 
-
 const QString VBOX_MANAGE_PATH_LAB3 = "C:/VirtualBox/VBoxManage.exe";
 const QString VM_NAME_LAB3 = "winxp";
 const QString GUEST_EXECUTABLE_PATH_LAB3 = "Z:/lab3/lab3.exe";
@@ -61,18 +60,9 @@ void Lab3Widget::setupUi() {
     infoTable->verticalHeader()->setVisible(false);
     infoTable->horizontalHeader()->setStretchLastSection(true);
     infoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
-    // ▼▼▼ ИЗМЕНЕНИЯ ЗДЕСЬ ▼▼▼
-
-    // 1. Устанавливаем ширину первого столбца, чтобы текст помещался
     infoTable->setColumnWidth(0, 180);
-
-    // 2. Устанавливаем режим растягивания строк по высоте
     infoTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    // ▲▲▲ КОНЕЦ ИЗМЕНЕНИЙ ▲▲▲
-
-    // Предварительное заполнение таблицы
     QStringList keys = {"Model", "Manufacturer", "SerialNumber", "Firmware", "TotalGB", "UsedGB", "FreeGB", "Interface", "Modes"};
     infoTable->setRowCount(keys.size());
     for (int i = 0; i < keys.size(); ++i) {
@@ -80,13 +70,8 @@ void Lab3Widget::setupUi() {
         infoTable->setItem(i, 1, new QTableWidgetItem("N/A"));
     }
 
-    // ▼▼▼ И ЕЩЕ ОДНО ИЗМЕНЕНИЕ ЗДЕСЬ ▼▼▼
-
-    // 3. Убираем растяжение и задаем фиксированную высоту для таблицы
-    mainLayout->addWidget(infoTable); // Убрали ", 2"
-    infoTable->setFixedHeight(380);   // Задали высоту
-
-    // ▲▲▲ КОНЕЦ ИЗМЕНЕНИЙ ▲▲▲
+    mainLayout->addWidget(infoTable);
+    infoTable->setFixedHeight(380);
 
     mainLayout->addSpacing(20);
 
@@ -95,9 +80,9 @@ void Lab3Widget::setupUi() {
     logDisplay->setStyleSheet(
         "QTextEdit { background-color: #2b2b2b; color: #ccc; border: 1px solid #555; border-radius: 8px; font-family: 'Consolas', monospace; }"
     );
-    mainLayout->addWidget(logDisplay, 1); // Лог теперь будет занимать все оставшееся место
+    mainLayout->addWidget(logDisplay, 1);
 
-    // Кнопки (без изменений)
+
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     backButton = new QPushButton("Назад", this);
     backButton->setFixedSize(150, 40);

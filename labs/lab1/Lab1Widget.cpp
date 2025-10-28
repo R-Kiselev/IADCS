@@ -197,7 +197,7 @@ void Lab1Widget::updatePowerStatus() {
         if (status.ACLineStatus == 0) {
             powerSource = "Автономная работа (от батареи)";
             if (lastPowerStatus.ACLineStatus == 1 || lastPowerStatus.ACLineStatus == 255) {
-                disconnectTimestamp = QDateTime::currentMSecsSinceEpoch(); // Записываем текущее время как начало отсчета
+                disconnectTimestamp = QDateTime::currentMSecsSinceEpoch();
                 qDebug() << "ОТКЛЮЧЕНО ОТ ЗАРЯДКИ! timestamp =" << disconnectTimestamp;
             }
         } else if (status.ACLineStatus == 1) {
@@ -211,9 +211,9 @@ void Lab1Widget::updatePowerStatus() {
 
         QString batteryChemistry = getBatteryChemistry();
         if (batteryChemistry == STATUS_UNKNOWN || batteryChemistry.isEmpty()) {
-            if ((status.BatteryFlag & 128) == 128) { // SYSTEM_BATTERY_NO_BATTERY
+            if ((status.BatteryFlag & 128) == 128) {
                  batteryTypeLabel->setText(QString("Тип батареи: Отсутствует"));
-            } else if ((status.BatteryFlag & 8) == 8) { // SYSTEM_BATTERY_CHARGING
+            } else if ((status.BatteryFlag & 8) == 8) {
                  batteryTypeLabel->setText(QString("Тип батареи: Заряжается"));
             } else if (status.BatteryLifePercent != 255) {
                  batteryTypeLabel->setText(QString("Тип батареи: Присутствует (тип неизвестен)"));

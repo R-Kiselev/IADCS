@@ -1,7 +1,7 @@
 #include "MyMainWindow.h"
 #include "labs/lab1/Lab1Widget.h"
 #include "labs/lab2/Lab2Widget.h"
-#include "labs/lab3/Lab3Widget.h" // <--- ADD THIS INCLUDE
+#include "labs/lab3/Lab3Widget.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QWidget>
@@ -67,9 +67,9 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
 
         if (i == 1) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab1ButtonClicked);
-        } else if (i == 2) { // Use else if for clarity
+        } else if (i == 2) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab2ButtonClicked);
-        } else if (i == 3) { // <--- ADD THIS BLOCK
+        } else if (i == 3) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab3ButtonClicked);
         }
 
@@ -200,7 +200,7 @@ void MyMainWindow::onLab2ButtonClicked() {
     });
 }
 
-// vvv ADD THIS ENTIRE FUNCTION vvv
+
 void MyMainWindow::onLab3ButtonClicked() {
     Lab3Widget *lab3 = new Lab3Widget(this);
     stackedWidget->addWidget(lab3);

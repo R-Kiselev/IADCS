@@ -56,4 +56,4 @@ private:
     QString getBatteryChemistry() const;
 };
 
-#endif // LAB1WIDGET_H
+#endif

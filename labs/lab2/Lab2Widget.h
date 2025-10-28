@@ -1,9 +1,6 @@
-// Файл: labs/lab2/Lab2Widget.h
-
 #ifndef LAB2WIDGET_H
 #define LAB2WIDGET_H
 
-#include <QWidget>
 #include <QTableWidget>
 #include <QPushButton>
 #include <QTextEdit>
@@ -14,33 +11,31 @@ class Lab2Widget : public QWidget {
 
 public:
     explicit Lab2Widget(QWidget *parent = nullptr);
-    ~Lab2Widget() override; // Добавляем деструктор для корректного выключения ВМ
+    ~Lab2Widget() override;
 
     signals:
         void backToMainScreen();
 
     private slots:
         void onBackButtonClicked();
-    void onRunVmScanClicked(); // Слот для новой кнопки запуска
-    void onVmReadyToExecute(); // Слот, который вызовется после 40-секундной задержки
+    void onRunVmScanClicked();
+    void onVmReadyToExecute();
 
 private:
-    void setupUi(); // Метод для создания и настройки интерфейса
-    void runVmCommand(const QStringList &args); // Общий метод для запуска команд
-    void readFileAndPopulateTable(); // Метод для чтения файла и заполнения таблицы
-    void stopVm(); // Метод для выключения ВМ
+    void setupUi();
+    void runVmCommand(const QStringList &args);
+    void readFileAndPopulateTable();
+    void stopVm();
 
-    void addLog(const QString &message); // Утилита для логирования
+    void addLog(const QString &message);
 
-    // Элементы интерфейса
     QTableWidget *pciTable;
     QTextEdit *logDisplay;
     QPushButton *backButton;
-    QPushButton *runVmScanButton; // Новая кнопка
+    QPushButton *runVmScanButton;
 
-    // Управление процессами
     QProcess *vboxProcess;
-    bool isVmRunning; // Флаг, что мы запустили ВМ и должны ее остановить
+    bool isVmRunning;
 };
 
-#endif // LAB2WIDGET_H
+#endif
