@@ -2,3 +2,4 @@
 #include "EWIEGA46WW/moc_MyMainWindow.cpp"
 #include "B7CVOVIF6E/moc_Lab1Widget.cpp"
 #include "5OFYQCBLXS/moc_Lab2Widget.cpp"
+#include "G2APW6GBYB/moc_Lab3Widget.cpp"

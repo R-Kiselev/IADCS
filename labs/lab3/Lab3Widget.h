@@ -2,11 +2,10 @@
 #define LAB3WIDGET_H
 
 #include <QWidget>
-#include <QLabel>
 #include <QPushButton>
 #include <QTextEdit>
 #include <QProcess>
-#include <QMap>
+#include <QTableWidget> // <--- Добавлено
 
 class Lab3Widget : public QWidget {
     Q_OBJECT
@@ -33,7 +32,7 @@ private:
     QTextEdit *logDisplay;
     QPushButton *backButton;
     QPushButton *runVmScanButton;
-    QMap<QString, QLabel*> infoLabels; // Using a map for easy access to labels
+    QTableWidget *infoTable; // <--- Заменено
 
     // Process Management
     QProcess *vboxProcess;

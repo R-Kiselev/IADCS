@@ -1,20 +1,19 @@
 #include "Lab3Widget.h"
-#include <QVBoxLayout>
 #include <QHBoxLayout>
-#include <QGridLayout>
+#include <QHeaderView>
 #include <QFile>
 #include <QTextStream>
 #include <QDateTime>
-#include <QDebug>
 #include <QTimer>
+#include <QLabel>
 
-// --- Constants (adjust these paths for your system) ---
+
 const QString VBOX_MANAGE_PATH_LAB3 = "C:/VirtualBox/VBoxManage.exe";
-const QString VM_NAME_LAB3 = "winxp"; // Same VM as Lab 2
-const QString GUEST_EXECUTABLE_PATH_LAB3 = "Z:/lab3/lab3.exe"; // Path to the executable inside the VM
+const QString VM_NAME_LAB3 = "winxp";
+const QString GUEST_EXECUTABLE_PATH_LAB3 = "Z:/lab3/lab3.exe";
 const QString GUEST_USERNAME_LAB3 = "Administrator";
 const QString GUEST_PASSWORD_LAB3 = "pass";
-const QString DISK_INFO_FILE_PATH = "D:/Study/ThirdCourse/IIUVM/dropbox/disk_info.txt"; // Path on the HOST to the results file
+const QString DISK_INFO_FILE_PATH = "D:/Study/ThirdCourse/IIUVM/dropbox/disk_info.txt";
 const int VM_BOOT_WAIT_MS_LAB3 = 40000;
 
 Lab3Widget::Lab3Widget(QWidget *parent) : QWidget(parent), isVmRunning(false) {
@@ -38,24 +37,57 @@ void Lab3Widget::setupUi() {
     titleLabel->setStyleSheet("font-size: 24px; font-weight: bold; color: white; margin-bottom: 20px;");
     mainLayout->addWidget(titleLabel, 0, Qt::AlignCenter);
 
-    // Grid layout for disk information
-    QGridLayout *infoLayout = new QGridLayout();
-    infoLayout->setSpacing(15);
-    QString labelStyle = "font-size: 16px; color: lightgray;";
-    QString valueStyle = "font-size: 16px; color: white; font-weight: bold;";
+    infoTable = new QTableWidget(this);
+    infoTable->setColumnCount(2);
+    infoTable->setHorizontalHeaderLabels({"Параметр", "Значение"});
+    infoTable->setStyleSheet(
+        "QTableWidget {"
+        "   background-color: #2b2b2b;"
+        "   color: #e0e0e0;"
+        "   border: 1px solid #555;"
+        "   border-radius: 8px;"
+        "   gridline-color: #444;"
+        "   font-size: 14px;"
+        "}"
+        "QTableWidget::item { padding: 8px; }"
+        "QHeaderView::section {"
+        "   background-color: #007bff;"
+        "   color: white; font-weight: bold; padding: 8px;"
+        "   border: none; border-right: 1px solid #0056b3;"
+        "}"
+        "QTableWidget::item:selected { background-color: #0056b3; }"
+        "QTableCornerButton::section { background-color: #007bff; }"
+    );
+    infoTable->verticalHeader()->setVisible(false);
+    infoTable->horizontalHeader()->setStretchLastSection(true);
+    infoTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    // ▼▼▼ ИЗМЕНЕНИЯ ЗДЕСЬ ▼▼▼
+
+    // 1. Устанавливаем ширину первого столбца, чтобы текст помещался
+    infoTable->setColumnWidth(0, 180);
+
+    // 2. Устанавливаем режим растягивания строк по высоте
+    infoTable->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+
+    // ▲▲▲ КОНЕЦ ИЗМЕНЕНИЙ ▲▲▲
+
+    // Предварительное заполнение таблицы
     QStringList keys = {"Model", "Manufacturer", "SerialNumber", "Firmware", "TotalGB", "UsedGB", "FreeGB", "Interface", "Modes"};
+    infoTable->setRowCount(keys.size());
     for (int i = 0; i < keys.size(); ++i) {
-        QLabel *keyLabel = new QLabel(keys[i] + ":", this);
-        keyLabel->setStyleSheet(labelStyle);
-        QLabel *valueLabel = new QLabel("N/A", this);
-        valueLabel->setStyleSheet(valueStyle);
-
-        infoLayout->addWidget(keyLabel, i, 0, Qt::AlignRight);
-        infoLayout->addWidget(valueLabel, i, 1);
-        infoLabels.insert(keys[i], valueLabel);
+        infoTable->setItem(i, 0, new QTableWidgetItem(keys[i]));
+        infoTable->setItem(i, 1, new QTableWidgetItem("N/A"));
     }
-    mainLayout->addLayout(infoLayout);
+
+    // ▼▼▼ И ЕЩЕ ОДНО ИЗМЕНЕНИЕ ЗДЕСЬ ▼▼▼
+
+    // 3. Убираем растяжение и задаем фиксированную высоту для таблицы
+    mainLayout->addWidget(infoTable); // Убрали ", 2"
+    infoTable->setFixedHeight(380);   // Задали высоту
+
+    // ▲▲▲ КОНЕЦ ИЗМЕНЕНИЙ ▲▲▲
+
     mainLayout->addSpacing(20);
 
     logDisplay = new QTextEdit(this);
@@ -63,9 +95,9 @@ void Lab3Widget::setupUi() {
     logDisplay->setStyleSheet(
         "QTextEdit { background-color: #2b2b2b; color: #ccc; border: 1px solid #555; border-radius: 8px; font-family: 'Consolas', monospace; }"
     );
-    mainLayout->addWidget(logDisplay, 1);
+    mainLayout->addWidget(logDisplay, 1); // Лог теперь будет занимать все оставшееся место
 
-    // Button layout
+    // Кнопки (без изменений)
     QHBoxLayout *buttonLayout = new QHBoxLayout();
     backButton = new QPushButton("Назад", this);
     backButton->setFixedSize(150, 40);
@@ -90,9 +122,8 @@ void Lab3Widget::onRunVmScanClicked() {
     runVmScanButton->setEnabled(false);
     addLog("--- Начало операции ---");
 
-    // Clear previous results
-    for (QLabel *label : infoLabels.values()) {
-        label->setText("N/A");
+    for (int i = 0; i < infoTable->rowCount(); ++i) {
+        infoTable->setItem(i, 1, new QTableWidgetItem("..."));
     }
 
     if (isVmRunning) {
@@ -160,9 +191,12 @@ void Lab3Widget::parseDiskInfoFile() {
             QString key = line.left(separatorIndex).trimmed();
             QString value = line.mid(separatorIndex + 1).trimmed();
 
-            if (infoLabels.contains(key)) {
-                infoLabels[key]->setText(value);
-                linesParsed++;
+            for (int i = 0; i < infoTable->rowCount(); ++i) {
+                if (infoTable->item(i, 0) && infoTable->item(i, 0)->text() == key) {
+                    infoTable->setItem(i, 1, new QTableWidgetItem(value));
+                    linesParsed++;
+                    break;
+                }
             }
         }
     }
