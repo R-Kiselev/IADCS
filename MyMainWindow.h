@@ -21,7 +21,9 @@ protected:
 
     private slots:
         void onLab1ButtonClicked();
-        void onLab2ButtonClicked();
+    void onLab2ButtonClicked();
+    void onLab3ButtonClicked(); // <--- ADD THIS LINE
+
 private:
     QLabel *perryLabel;
     QPixmap originalPerryPixmap;

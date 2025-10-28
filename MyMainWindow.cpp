@@ -1,6 +1,7 @@
 #include "MyMainWindow.h"
 #include "labs/lab1/Lab1Widget.h"
-#include "labs/lab2/Lab2Widget.h" // <--- ДОБАВИТЬ ЭТО
+#include "labs/lab2/Lab2Widget.h"
+#include "labs/lab3/Lab3Widget.h" // <--- ADD THIS INCLUDE
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QWidget>
@@ -66,9 +67,10 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
 
         if (i == 1) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab1ButtonClicked);
-        }
-        if (i == 2) {
+        } else if (i == 2) { // Use else if for clarity
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab2ButtonClicked);
+        } else if (i == 3) { // <--- ADD THIS BLOCK
+            connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab3ButtonClicked);
         }
 
 
@@ -195,5 +197,18 @@ void MyMainWindow::onLab2ButtonClicked() {
         stackedWidget->setCurrentIndex(0);
         stackedWidget->removeWidget(lab2);
         lab2->deleteLater();
+    });
+}
+
+// vvv ADD THIS ENTIRE FUNCTION vvv
+void MyMainWindow::onLab3ButtonClicked() {
+    Lab3Widget *lab3 = new Lab3Widget(this);
+    stackedWidget->addWidget(lab3);
+    stackedWidget->setCurrentWidget(lab3);
+
+    connect(lab3, &Lab3Widget::backToMainScreen, this, [this, lab3]() {
+        stackedWidget->setCurrentIndex(0);
+        stackedWidget->removeWidget(lab3);
+        lab3->deleteLater();
     });
 }
