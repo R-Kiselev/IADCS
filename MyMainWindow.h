@@ -22,6 +22,7 @@ protected:
         void onLab1ButtonClicked();
     void onLab2ButtonClicked();
     void onLab3ButtonClicked();
+    void onLab4ButtonClicked();
 
 private:
     QLabel *perryLabel;

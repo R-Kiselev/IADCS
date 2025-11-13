@@ -2,6 +2,7 @@
 #include "labs/lab1/Lab1Widget.h"
 #include "labs/lab2/Lab2Widget.h"
 #include "labs/lab3/Lab3Widget.h"
+#include "labs/lab4/Lab4Widget.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QWidget>
@@ -16,7 +17,7 @@
 
 MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
     setWindowTitle("Лабораторные работы: Интерфейсы и устройства ПК");
-    setFixedSize(1024, 768);
+    resize(1024, 768);
     setStyleSheet("background-color: #2b2b2b;");
 
     stackedWidget = new QStackedWidget(this);
@@ -71,6 +72,8 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab2ButtonClicked);
         } else if (i == 3) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab3ButtonClicked);
+        } else if (i == 4) {
+            connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab4ButtonClicked);
         }
 
 
@@ -102,7 +105,7 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
     buttonsAndPerryLayout->addLayout(rightColumnLayout);
 
     overallLayout->addLayout(buttonsAndPerryLayout);
-    overallLayout->addStretch();
+    overallLayout->addStretch(); // <--- ЭТА СТРОКА ДОБАВЛЕНА ДЛЯ ЦЕНТРИРОВАНИЯ
 
     stackedWidget->addWidget(mainScreenWidget);
 }
@@ -210,5 +213,17 @@ void MyMainWindow::onLab3ButtonClicked() {
         stackedWidget->setCurrentIndex(0);
         stackedWidget->removeWidget(lab3);
         lab3->deleteLater();
+    });
+}
+
+void MyMainWindow::onLab4ButtonClicked() {
+    Lab4Widget *lab4 = new Lab4Widget(this);
+    stackedWidget->addWidget(lab4);
+    stackedWidget->setCurrentWidget(lab4);
+
+    connect(lab4, &Lab4Widget::backToMainScreen, this, [this, lab4]() {
+        stackedWidget->setCurrentIndex(0);
+        stackedWidget->removeWidget(lab4);
+        lab4->deleteLater();
     });
 }
