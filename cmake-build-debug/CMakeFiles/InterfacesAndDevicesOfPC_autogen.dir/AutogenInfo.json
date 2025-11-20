@@ -412,6 +412,12 @@
 			"MU",
 			"5AKLNLGWOX/moc_Lab4Widget.cpp",
 			null
+		],
+		[
+			"C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab5/Lab5Widget.h",
+			"MU",
+			"HELIHUH3PB/moc_Lab5Widget.cpp",
+			null
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
@@ -514,6 +520,11 @@
 		],
 		[
 			"C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab4/Lab4Widget.cpp",
+			"MU",
+			null
+		],
+		[
+			"C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab5/Lab5Widget.cpp",
 			"MU",
 			null
 		],

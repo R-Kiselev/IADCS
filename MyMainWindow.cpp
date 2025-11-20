@@ -3,6 +3,7 @@
 #include "labs/lab2/Lab2Widget.h"
 #include "labs/lab3/Lab3Widget.h"
 #include "labs/lab4/Lab4Widget.h"
+#include "labs/lab5/Lab5Widget.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QWidget>
@@ -74,6 +75,8 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab3ButtonClicked);
         } else if (i == 4) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab4ButtonClicked);
+        } else if (i == 5) { // <-- ДОБАВИТЬ ЭТОТ БЛОК
+            connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab5ButtonClicked);
         }
 
 
@@ -225,5 +228,17 @@ void MyMainWindow::onLab4ButtonClicked() {
         stackedWidget->setCurrentIndex(0);
         stackedWidget->removeWidget(lab4);
         lab4->deleteLater();
+    });
+}
+
+void MyMainWindow::onLab5ButtonClicked() {
+    Lab5Widget *lab5 = new Lab5Widget(this);
+    stackedWidget->addWidget(lab5);
+    stackedWidget->setCurrentWidget(lab5);
+
+    connect(lab5, &Lab5Widget::backToMainScreen, this, [this, lab5]() {
+        stackedWidget->setCurrentIndex(0);
+        stackedWidget->removeWidget(lab5);
+        lab5->deleteLater();
     });
 }

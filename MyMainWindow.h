@@ -23,6 +23,8 @@ protected:
     void onLab2ButtonClicked();
     void onLab3ButtonClicked();
     void onLab4ButtonClicked();
+    void onLab5ButtonClicked(); // <-- ДОБАВИТЬ ЭТОТ СЛОТ
+
 
 private:
     QLabel *perryLabel;

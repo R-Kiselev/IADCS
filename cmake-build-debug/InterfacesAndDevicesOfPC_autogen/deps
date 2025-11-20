@@ -3,6 +3,7 @@ InterfacesAndDevicesOfPC_autogen/timestamp: \
 	C:/Qt/6.9.2/mingw_64/include/QtCore/QEvent \
 	C:/Qt/6.9.2/mingw_64/include/QtCore/QProcess \
 	C:/Qt/6.9.2/mingw_64/include/QtCore/QRegularExpression \
+	C:/Qt/6.9.2/mingw_64/include/QtCore/QSet \
 	C:/Qt/6.9.2/mingw_64/include/QtCore/QTimer \
 	C:/Qt/6.9.2/mingw_64/include/QtCore/q17memory.h \
 	C:/Qt/6.9.2/mingw_64/include/QtCore/q20functional.h \
@@ -499,6 +500,8 @@ InterfacesAndDevicesOfPC_autogen/timestamp: \
 	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab3/Lab3Widget.h \
 	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab4/Lab4Widget.cpp \
 	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab4/Lab4Widget.h \
+	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab5/Lab5Widget.cpp \
+	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/labs/lab5/Lab5Widget.h \
 	C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/main.cpp \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/cmake/win/x64/share/cmake-3.29/Modules/CMakeCInformation.cmake \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/cmake/win/x64/share/cmake-3.29/Modules/CMakeCXXInformation.cmake \
@@ -881,6 +884,7 @@ InterfacesAndDevicesOfPC_autogen/timestamp: \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/crtdefs.h \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/ctype.h \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/datetimeapi.h \
+	D:/Programming/Clion/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/dbt.h \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/dde.h \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/ddeml.h \
 	D:/Programming/Clion/CLion\ 2024.2.2/bin/mingw/x86_64-w64-mingw32/include/debugapi.h \

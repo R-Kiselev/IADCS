@@ -49,6 +49,8 @@ add_executable(InterfacesAndDevicesOfPC
         labs/lab3/Lab3Widget.h
         labs/lab4/Lab4Widget.cpp
         labs/lab4/Lab4Widget.h
+        labs/lab5/Lab5Widget.cpp
+        labs/lab5/Lab5Widget.h
 )
 
 # Добавляем манифест к исполняемому файлу
