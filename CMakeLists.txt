@@ -7,19 +7,23 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# --- ИЗМЕНЕНИЕ 1: Путь к Qt MSVC ---
-# Укажите точный путь, куда установился Qt 6.5.3 MSVC
-set(CMAKE_PREFIX_PATH "C:/Qt/6.5.3/msvc2019_64")
+# Путь к Qt 6.9.3 (MinGW)
+set(CMAKE_PREFIX_PATH "C:/Qt/6.9.3/mingw_64")
 
-# --- ИЗМЕНЕНИЕ 2: Добавлен компонент Bluetooth ---
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Multimedia MultimediaWidgets Bluetooth)
+# Убрали Qt6::Bluetooth, так как возвращаемся к WinAPI (bthprops)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Multimedia MultimediaWidgets)
 
 if(WIN32)
-    # Манифест для прав администратора (нужен для Lab 1-3, 5)
+    # Манифест для прав администратора
     file(WRITE ${CMAKE_BINARY_DIR}/app.manifest
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
 <assembly xmlns=\"urn:schemas-microsoft-com:asm.v1\" manifestVersion=\"1.0\">
-  <assemblyIdentity version=\"1.0.0.0\" processorArchitecture=\"*\" name=\"${PROJECT_NAME}\" type=\"win32\"/>
+  <assemblyIdentity
+    version=\"1.0.0.0\"
+    processorArchitecture=\"*\"
+    name=\"${PROJECT_NAME}\"
+    type=\"win32\"
+  />
   <description>Interfaces and Devices of PC Labs</description>
   <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">
     <security>
@@ -60,14 +64,11 @@ target_link_libraries(InterfacesAndDevicesOfPC PRIVATE
         Qt6::Widgets
         Qt6::Multimedia
         Qt6::MultimediaWidgets
-        Qt6::Bluetooth  # <--- ИЗМЕНЕНИЕ 3: Линковка Qt Bluetooth
-        # Системные библиотеки Windows (оставляем для Lab 1-5)
+        # Системные библиотеки Windows
         powrprof
         setupapi
         cfgmgr32
-        user32    # Часто нужны для MSVC
-        kernel32
-        # bthprops # <--- УДАЛЕНО: Больше не нужно, используем Qt
+        bthprops  # <--- ВЕРНУЛИ для работы с bluetoothapis.h
 )
 
 if(WIN32)
@@ -78,5 +79,5 @@ add_custom_command(TARGET InterfacesAndDevicesOfPC POST_BUILD
         COMMAND "${CMAKE_PREFIX_PATH}/bin/windeployqt.exe"
         "$<TARGET_FILE:InterfacesAndDevicesOfPC>"
         WORKING_DIRECTORY "$<TARGET_FILE_DIR:InterfacesAndDevicesOfPC>"
-        COMMENT "Running windeployqt..."
+        COMMENT "Running windeployqt to deploy dependencies..."
 )
