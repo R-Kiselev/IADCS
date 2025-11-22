@@ -5,3 +5,4 @@
 #include "G2APW6GBYB/moc_Lab3Widget.cpp"
 #include "5AKLNLGWOX/moc_Lab4Widget.cpp"
 #include "HELIHUH3PB/moc_Lab5Widget.cpp"
+#include "S4UXAFS5TW/moc_Lab6Widget.cpp"

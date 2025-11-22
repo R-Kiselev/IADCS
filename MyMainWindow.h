@@ -24,6 +24,7 @@ protected:
     void onLab3ButtonClicked();
     void onLab4ButtonClicked();
     void onLab5ButtonClicked(); // <-- ДОБАВИТЬ ЭТОТ СЛОТ
+    void onLab6ButtonClicked(); // <--- ДОБАВИТЬ
 
 
 private:

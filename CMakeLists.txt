@@ -7,23 +7,19 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Укажите путь к вашей установке Qt (более короткий путь, как в примере)
-set(CMAKE_PREFIX_PATH "C:/Qt/6.9.2/mingw_64")
+# --- ИЗМЕНЕНИЕ 1: Путь к Qt MSVC ---
+# Укажите точный путь, куда установился Qt 6.5.3 MSVC
+set(CMAKE_PREFIX_PATH "C:/Qt/6.5.3/msvc2019_64")
 
-# Находим все необходимые компоненты Qt
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Multimedia MultimediaWidgets)
+# --- ИЗМЕНЕНИЕ 2: Добавлен компонент Bluetooth ---
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Multimedia MultimediaWidgets Bluetooth)
 
-# Создаем манифест приложения для запроса прав администратора (взято из вашего примера)
 if(WIN32)
+    # Манифест для прав администратора (нужен для Lab 1-3, 5)
     file(WRITE ${CMAKE_BINARY_DIR}/app.manifest
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>
 <assembly xmlns=\"urn:schemas-microsoft-com:asm.v1\" manifestVersion=\"1.0\">
-  <assemblyIdentity
-    version=\"1.0.0.0\"
-    processorArchitecture=\"*\"
-    name=\"${PROJECT_NAME}\"
-    type=\"win32\"
-  />
+  <assemblyIdentity version=\"1.0.0.0\" processorArchitecture=\"*\" name=\"${PROJECT_NAME}\" type=\"win32\"/>
   <description>Interfaces and Devices of PC Labs</description>
   <trustInfo xmlns=\"urn:schemas-microsoft-com:asm.v3\">
     <security>
@@ -35,7 +31,6 @@ if(WIN32)
 </assembly>")
 endif()
 
-# Определяем исполняемый файл и все его исходники
 add_executable(InterfacesAndDevicesOfPC
         main.cpp
         app.qrc
@@ -51,39 +46,37 @@ add_executable(InterfacesAndDevicesOfPC
         labs/lab4/Lab4Widget.h
         labs/lab5/Lab5Widget.cpp
         labs/lab5/Lab5Widget.h
+        labs/lab6/Lab6Widget.cpp
+        labs/lab6/Lab6Widget.h
 )
 
-# Добавляем манифест к исполняемому файлу
 if(WIN32)
     target_sources(InterfacesAndDevicesOfPC PRIVATE ${CMAKE_BINARY_DIR}/app.manifest)
 endif()
 
-# Связываем исполняемый файл со всеми необходимыми библиотеками
 target_link_libraries(InterfacesAndDevicesOfPC PRIVATE
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
         Qt6::Multimedia
         Qt6::MultimediaWidgets
-        # Системные библиотеки для лабораторных работ
+        Qt6::Bluetooth  # <--- ИЗМЕНЕНИЕ 3: Линковка Qt Bluetooth
+        # Системные библиотеки Windows (оставляем для Lab 1-5)
         powrprof
         setupapi
         cfgmgr32
+        user32    # Часто нужны для MSVC
+        kernel32
+        # bthprops # <--- УДАЛЕНО: Больше не нужно, используем Qt
 )
 
-# Устанавливаем подсистему Windows для скрытия консоли
 if(WIN32)
     set_target_properties(InterfacesAndDevicesOfPC PROPERTIES WIN32_EXECUTABLE ON)
 endif()
 
-# [ГЛАВНОЕ ИЗМЕНЕНИЕ]
-# Автоматически копируем все зависимости Qt (DLL, плагины и т.д.) после сборки
-# с помощью утилиты windeployqt. Это заменяет старый ручной метод.
 add_custom_command(TARGET InterfacesAndDevicesOfPC POST_BUILD
         COMMAND "${CMAKE_PREFIX_PATH}/bin/windeployqt.exe"
-        # Указываем путь к нашему exe-файлу
         "$<TARGET_FILE:InterfacesAndDevicesOfPC>"
-        # Указываем рабочую директорию, чтобы все файлы скопировались куда нужно
         WORKING_DIRECTORY "$<TARGET_FILE_DIR:InterfacesAndDevicesOfPC>"
-        COMMENT "Running windeployqt to deploy dependencies..."
+        COMMENT "Running windeployqt..."
 )

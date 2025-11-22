@@ -1,9 +1,12 @@
 #include "MyMainWindow.h"
+
+#include "labs/lab6/Lab6Widget.h" // <--- ДОБАВИТЬ
 #include "labs/lab1/Lab1Widget.h"
 #include "labs/lab2/Lab2Widget.h"
 #include "labs/lab3/Lab3Widget.h"
 #include "labs/lab4/Lab4Widget.h"
 #include "labs/lab5/Lab5Widget.h"
+
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QWidget>
@@ -77,7 +80,10 @@ MyMainWindow::MyMainWindow(QWidget *parent) : QMainWindow(parent) {
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab4ButtonClicked);
         } else if (i == 5) { // <-- ДОБАВИТЬ ЭТОТ БЛОК
             connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab5ButtonClicked);
+        } else if (i == 6) {
+            connect(labButton, &QPushButton::clicked, this, &MyMainWindow::onLab6ButtonClicked);
         }
+
 
 
         if (i <= 3) {
@@ -240,5 +246,17 @@ void MyMainWindow::onLab5ButtonClicked() {
         stackedWidget->setCurrentIndex(0);
         stackedWidget->removeWidget(lab5);
         lab5->deleteLater();
+    });
+}
+
+void MyMainWindow::onLab6ButtonClicked() {
+    Lab6Widget *lab6 = new Lab6Widget(this);
+    stackedWidget->addWidget(lab6);
+    stackedWidget->setCurrentWidget(lab6);
+
+    connect(lab6, &Lab6Widget::backToMainScreen, this, [this, lab6]() {
+        stackedWidget->setCurrentIndex(0);
+        stackedWidget->removeWidget(lab6);
+        lab6->deleteLater();
     });
 }
