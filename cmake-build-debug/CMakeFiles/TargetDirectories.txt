@@ -1,5 +1,0 @@
-C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/CMakeFiles/InterfacesAndDevicesOfPC.dir
-C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/CMakeFiles/InterfacesAndDevicesOfPC_autogen_timestamp_deps.dir
-C:/Users/Raman/CLionProjects/InterfacesAndDevicesOfPC/cmake-build-debug/CMakeFiles/InterfacesAndDevicesOfPC_autogen.dir

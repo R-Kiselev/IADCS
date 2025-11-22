@@ -369,23 +369,75 @@ void Lab6Widget::launchWindowsTransferWizard()
 
 void Lab6Widget::onSendFile()
 {
-    if (!connectedDevice) return;
+    // 1. Check if device is selected
+    if (!connectedDevice) {
+        QMessageBox::warning(this, "Ошибка", "Сначала выберите устройство и нажмите 'Подключиться'!");
+        return;
+    }
 
-    // Мы все равно просим выбрать файл, чтобы показать пользователю, что процесс идет,
-    // и чтобы залогировать имя файла.
+    // 2. Select the file (Restoring QFileDialog)
     QString filePath = QFileDialog::getOpenFileName(
         this,
         "Выберите аудиофайл",
         QStandardPaths::writableLocation(QStandardPaths::MusicLocation),
-        "Аудио (*.mp3 *.wav *.m4a);;Все (*.*)"
+        "Audio (*.mp3 *.wav *.m4a);;All Files (*.*)"
     );
 
     if (filePath.isEmpty()) return;
 
-    appendToLog(QString("Подготовка к отправке: %1").arg(QFileInfo(filePath).fileName()), "blue");
-    appendToLog("Запуск мастера Windows...", "blue");
-    appendToLog("⚠️ ВНИМАНИЕ: В открывшемся окне выберите устройство и файл ПОВТОРНО.", "orange");
-    appendToLog("(Ограничение Windows: программа fsquirt не принимает параметры)", "gray");
+    // 3. Prepare the command
+    // Syntax: btobex -b(11:22:33:44:55:66) "filename"
+    QString program = "C:/Program Files (x86)/Bluetooth Command Line Tools/bin/btobex.exe";
 
-    launchWindowsTransferWizard();
+    // Добавьте проверку перед запуском, чтобы точно знать, в чем дело:
+    if (!QFile::exists(program)) {
+        appendToLog("ОШИБКА: Файл btobex.exe не найден по пути:", "red");
+        appendToLog(program, "red");
+        return;
+    }
+    // Ensure the address is formatted correctly.
+    // Usually connectedDevice->address is "XX:XX:XX:XX:XX:XX"
+    QString addressArg = QString("-b(%1)").arg(connectedDevice->address);
+
+    QStringList arguments;
+    arguments << addressArg;
+    arguments << QDir::toNativeSeparators(filePath); // Good practice for Windows paths
+
+    appendToLog(QString("Запуск: %1 %2").arg(program, arguments.join(" ")), "blue");
+
+    // 4. Execute QProcess
+    QProcess *process = new QProcess(this);
+
+    // Connect signals to read output/errors from the console tool
+    connect(process, &QProcess::readyReadStandardOutput, this, [this, process]() {
+        QByteArray data = process->readAllStandardOutput();
+        // Convert console encoding (often CP866 or CP1251 on Russian Windows) to Unicode
+        QString message = QString::fromLocal8Bit(data).trimmed();
+        if (!message.isEmpty()) appendToLog("btobex: " + message, "gray");
+    });
+
+    connect(process, &QProcess::readyReadStandardError, this, [this, process]() {
+        QByteArray data = process->readAllStandardError();
+        QString message = QString::fromLocal8Bit(data).trimmed();
+        if (!message.isEmpty()) appendToLog("btobex Error: " + message, "orange");
+    });
+
+    connect(process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished),
+            this, [this, process](int exitCode, QProcess::ExitStatus exitStatus) {
+        if (exitStatus == QProcess::NormalExit && exitCode == 0) {
+            appendToLog("Файл успешно отправлен!", "#28a745"); // Green
+        } else {
+            appendToLog(QString("Ошибка отправки. Код выхода: %1").arg(exitCode), "red");
+            appendToLog("Убедитесь, что устройство сопряжено и btobex установлен.", "gray");
+        }
+        process->deleteLater();
+    });
+
+    process->start(program, arguments);
+
+    if (!process->waitForStarted(2000)) {
+        appendToLog("Не удалось запустить btobex.exe", "red");
+        appendToLog("Скачайте Bluetooth Command Line Tools и добавьте в PATH.", "orange");
+        process->deleteLater();
+    }
 }
